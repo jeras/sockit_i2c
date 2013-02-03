@@ -9,11 +9,16 @@ module sockit_i2c_master_model #(
 logic scl_o, scl_e;
 logic sda_o, sda_e;
 
+event event_start;
+event event_stop;
+event event_sample;
+
+
 bufif1 buf_scl (scl , scl_o, scl_e); 
 bufif1 buf_sda (sda , sda_o, sda_e); 
 
 // delay variables initialized to delay parameters
-real t_unit = 10ns;
+real t_unit = 500ns;
 
 // after power-up, put the master into an idle state
 initial begin
@@ -25,7 +30,9 @@ end
 
 task i2c_start;
 begin
+  # t_unit;
   sda_e = 1'b1;
+  -> event_start;
   # t_unit;
   scl_e = 1'b1;
   # t_unit;
@@ -34,9 +41,11 @@ endtask : i2c_start
 
 task i2c_stop;
 begin
+  # t_unit;
   scl_e = 1'b0;
   # t_unit;
   sda_e = 1'b0;
+  -> event_stop;
   # t_unit;
 end
 endtask : i2c_stop
@@ -49,10 +58,10 @@ begin
   sda_e = ~bit_i;
   # t_unit;
   scl_e = 1'b0;
-  # 1ns;
   bit_o = sda;
+  -> event_sample;
   # t_unit;
-  scl_e = 1'b0;
+  scl_e = 1'b1;
   # t_unit;
 end
 endtask : i2c_bit

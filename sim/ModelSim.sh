@@ -7,4 +7,4 @@ export SOURCES="$HDL_DIR/tbn/sockit_i2c_master_model.sv $HDL_DIR/tbn/sockit_i2c_
 
 $MODELSIM_BIN/vlib work
 $MODELSIM_BIN/vlog $SOURCES
-$MODELSIM_BIN/vsim -c -do 'run;quit' sockit_i2c_tb
+$MODELSIM_BIN/vsim -c -do 'run -all;quit' sockit_i2c_tb
