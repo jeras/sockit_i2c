@@ -1,9 +1,9 @@
 module sockit_i2c_master_model #(
-  parameter real T_SCL,
-  parameter real T_SDA
+  parameter real T_SCL = 1us,
+  parameter real T_SDA = 1us
 )(
-  inout logic scl,  // serial clock
-  inout logic sda   // serial data
+  inout wire scl,  // serial clock
+  inout wire sda   // serial data
 );
 
 logic scl_o, scl_e;
@@ -71,8 +71,8 @@ endtask : i2c_byte
 
 task i2c_transfer (
   input  logic [6:0] id,
-  output logic       rw,
-  output logic [7:0] data_i,
+  input  logic       rw,
+  input  logic [7:0] data_i,
   output logic [7:0] data_o
 );
   logic [7:0] dat;
